@@ -204,9 +204,9 @@ handle_exception:                                                       \
 reset_vector:                                                           \
         INIT_XREG;                                                      \
         RISCV_MULTICORE_DISABLE;                                        \
-        INIT_RNMI;                                                      \
+        /* INIT_RNMI; */                                                     \
         INIT_SATP;                                                      \
-        INIT_PMP;                                                       \
+        /* INIT_PMP;         */                                              \
         DELEGATE_NO_TRAPS;                                              \
         li TESTNUM, 0;                                                  \
         la t0, trap_vector;                                             \
@@ -245,21 +245,23 @@ reset_vector:                                                           \
 //-----------------------------------------------------------------------
 
 #define RVTEST_PASS                                                     \
-        fence;                                                          \
-        li TESTNUM, 1;                                                  \
-        li a7, 93;                                                      \
-        li a0, 0;                                                       \
-        ecall
+        .word 0x0000000b
+        // fence;                                                          \
+        // li TESTNUM, 1;                                                  \
+        // li a7, 93;                                                      \
+        // li a0, 0;                                                       \
+        // ecall
 
 #define TESTNUM gp
 #define RVTEST_FAIL                                                     \
-        fence;                                                          \
-1:      beqz TESTNUM, 1b;                                               \
-        sll TESTNUM, TESTNUM, 1;                                        \
-        or TESTNUM, TESTNUM, 1;                                         \
-        li a7, 93;                                                      \
-        addi a0, TESTNUM, 0;                                            \
-        ecall
+          .word 0x0010000b
+//         fence;                                                          \
+// 1:      beqz TESTNUM, 1b;                                               \
+//         sll TESTNUM, TESTNUM, 1;                                        \
+//         or TESTNUM, TESTNUM, 1;                                         \
+//         li a7, 93;                                                      \
+//         addi a0, TESTNUM, 0;                                            \
+//         ecall
 
 //-----------------------------------------------------------------------
 // Data Section Macro
