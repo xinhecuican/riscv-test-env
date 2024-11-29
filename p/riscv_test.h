@@ -206,7 +206,7 @@ reset_vector:                                                           \
         RISCV_MULTICORE_DISABLE;                                        \
         /* INIT_RNMI; */                                                     \
         INIT_SATP;                                                      \
-        /* INIT_PMP;         */                                              \
+        INIT_PMP;                                                       \
         DELEGATE_NO_TRAPS;                                              \
         li TESTNUM, 0;                                                  \
         la t0, trap_vector;                                             \
